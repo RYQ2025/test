@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }} - Admin System</title>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+        {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('main.submit_data') }}" novalidate>
+        {{ form.hidden_tag() }} {# CSRF token #}
+        <p>
+            {{ form.data_content.label }}<br>
+            {{ form.data_content }}<br>
+            {% if form.data_content.errors %}
+                <ul class="errors">{% for error in form.data_content.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    <p><a href="{{ url_for('main.index') }}">Back to Dashboard</a></p>
+</body>
+</html>
